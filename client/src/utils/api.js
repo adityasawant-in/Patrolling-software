@@ -6,7 +6,7 @@ const api = axios.create({
 });
 
 export const fetchQRCodes = async () => {
-  const response = await api.get('/qr');
+  const response = await axios.get('http://localhost:5000/api/qr');
   return response.data;
 };
 
@@ -19,3 +19,5 @@ export const deleteQRCode = async (id) => {
   const response = await api.delete(`/qr/${id}`);
   return response.data;
 };
+
+

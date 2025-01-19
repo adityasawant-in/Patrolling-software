@@ -55,7 +55,7 @@ const QRForm = ({ onClose, onSave }) => {
   
       console.log('Save response:', result.data);
       toast.success('QR Code saved successfully!');
-      onSave();
+      onSave(); // Call onSave to refresh the QR codes in the Dashboard
       onClose();
     } catch (error) {
       console.error('Full error details:', error);
@@ -67,7 +67,7 @@ const QRForm = ({ onClose, onSave }) => {
       }
     }
   };
-
+  
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">

@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { useState } from 'react';
+import { saveAs } from 'file-saver'; // Import the FileSaver library
 
 const QRCard = ({ qrCode, onDelete }) => {
   const [isDeleting, setIsDeleting] = useState(false);
@@ -12,7 +13,7 @@ const QRCard = ({ qrCode, onDelete }) => {
         withCredentials: true,
       });
       toast.success('QR code deleted successfully');
-      onDelete();
+      onDelete(); // Call onDelete to refresh the list after deleting
     } catch (error) {
       toast.error(
         error.response?.data?.message || 'Failed to delete QR code. Please try again.'
@@ -20,6 +21,11 @@ const QRCard = ({ qrCode, onDelete }) => {
     } finally {
       setIsDeleting(false);
     }
+  };
+
+  const saveQRCode = () => {
+    saveAs(qrCode.qrCodeUrl, `${qrCode.uniqueCode}.png`); // Save the QR code image
+    toast.success('QR code saved successfully');
   };
 
   return (
@@ -37,15 +43,21 @@ const QRCard = ({ qrCode, onDelete }) => {
           <p className="text-gray-600">Location: {qrCode.location}</p>
           <p className="text-gray-600">Code: {qrCode.uniqueCode}</p>
         </div>
-        <button
-          onClick={deleteQRCode}
-          className={`w-full py-2 rounded text-white ${
-            isDeleting ? 'bg-gray-500' : 'bg-red-500 hover:bg-red-600'
-          }`}
-          disabled={isDeleting}
-        >
-          {isDeleting ? 'Deleting...' : 'Delete'}
-        </button>
+        <div className="space-y-2">
+          <button
+            onClick={deleteQRCode}
+            className={`w-full py-2 rounded text-white ${isDeleting ? 'bg-gray-500' : 'bg-red-500 hover:bg-red-600'}`}
+            disabled={isDeleting}
+          >
+            {isDeleting ? 'Deleting...' : 'Delete'}
+          </button>
+          <button
+            onClick={saveQRCode}
+            className="w-full py-2 rounded text-white bg-blue-500 hover:bg-blue-600"
+          >
+            Save QR Code
+          </button>
+        </div>
       </div>
     </div>
   );
